@@ -1,0 +1,43 @@
+% Def. des Layouts
+\input{docform}
+
+% Titeldefinition
+\title{Drachend"ammerungabenteuer -\\Das Drachentier}
+\author{Autor: Marco Behnke\\
+      Derzeitiger Seitenumfang: \pageref{TotalPages}
+      }
+
+% Dokumentgliederung
+\begin{document}
+        \sffamily
+        \frontmatter
+                \maketitle\newpage
+                \tableofcontents
+        \include{../vorwort_abenteuer}
+        \mainmatter
+                \part{Einleitung}
+            \include{einleitung}
+                \part{Das Abenteuer}
+            \include{ankunftimdorf}
+            \include{derueberfall}
+            \include{einereiseindieberge}
+            \include{dasdrachentier}
+            \include{wettlaufmitderzeit}
+            \include{dierettung}
+            \include{dasende}
+        %\backmatter
+                \pagenumbering{Roman}
+                \part{Anhang}
+                        \appendix
+            \input{steen_geschichten}
+            \input{das_kleine_maedchen}
+            \input{die_hoehlenkarte}
+            \input{der_beschwoerungszirkel}
+            \input{die_beschwoerungskarten}
+%                        \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+%                                \listoffigures
+%                        \addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+%                                \listoftables
+%                        \addcontentsline{toc}{chapter}{Index}
+%                                \printindex
+\end{document}

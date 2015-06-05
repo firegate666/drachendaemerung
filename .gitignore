@@ -1,0 +1,17 @@
+compile.cmd
+*.aux
+*.pdf
+*.ps
+*.zip
+*.dvi
+*.log
+*.ilg
+*.ind
+*.lof
+*.lot
+*.idx
+*.toc
+gesamt.pdx
+gesamt.pnd
+gesamt.rdx
+gesamt.rnd
