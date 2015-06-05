@@ -1,0 +1,59 @@
+% Def. des Layouts
+\input{docform}
+
+% Titeldefinition
+\title{\epsfig{file=pics/dd.eps, scale=0.6}}
+\author{%\epsfig{file=pics/drache.eps, scale=0.3}\\\\
+      Autor: Marco Behnke\\
+      Seitenumfang: \pageref{TotalPages}\\
+      }
+
+% Dokumentgliederung
+\begin{document}
+        \sffamily
+        \frontmatter
+                \begin{titlepage}
+                	\maketitle
+                \end{titlepage}
+                \setcounter{section}{-1}
+                \addcontentsline{toc}{chapter}{Vorwort}
+                \include{vorwort}
+
+                \tableofcontents
+                \newpage\input{dieeinleitungeinleitung}
+        \mainmatter
+                \part{Einleitung}
+                        \input{regelsystem}
+                        \input{spielwelt}
+                        \newpage\input{dieregelneinleitung}
+                \part{Die Regeln}
+                        \input{charakterklassen}
+                        \input{dierassen}
+                        \input{neuefertigkeiten}
+                        \input{diemagie}
+                        \newpage\input{diewelteinleitung}
+                \part{Die Welt}
+                        \input{diewelt}
+                        \input{dievoelker}
+                        \input{kraeuterkunde}
+                        \input{religion}
+                        \input{tierleben}
+                        \input{bestiarium}
+                        \input{diewelt/masseundgewichte}
+                        \input{legendenundgeschichten}
+        \backmatter
+                \appendix
+                \pagenumbering{Roman}
+                \part{Anhang}
+                        \include{weltkarte}
+                        \include{literatur}
+                        \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+                                \listoffigures
+                        \addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+                                \listoftables
+                        \addcontentsline{toc}{chapter}{Index}
+                                \printindex
+                                \printindex[regionen]
+                                \printindex[personen]
+                        \include{impressum}
+\end{document}
