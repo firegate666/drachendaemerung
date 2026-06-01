@@ -1,0 +1,42 @@
+name: Build PDFs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Docker image layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/docker-cache
+          key: docker-texlive-${{ hashFiles('Dockerfile') }}
+
+      - name: Load cached image (if present)
+        run: |
+          if [ -f /tmp/docker-cache/texlive.tar ]; then
+            docker load < /tmp/docker-cache/texlive.tar
+          fi
+
+      - name: Build all PDFs
+        run: make all
+
+      - name: Save image to cache
+        run: |
+          mkdir -p /tmp/docker-cache
+          docker save drachendaemmerung-latex > /tmp/docker-cache/texlive.tar
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: drachendaemmerung-pdfs
+          path: |
+            drachendaemmerung.pdf
+            abenteuer_template/abenteuer_template.pdf
+            abenteuer1/ab_dasdrachentier.pdf
+          if-no-files-found: error
