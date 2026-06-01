@@ -8,6 +8,7 @@ compile.cmd
 *.zip
 *.dvi
 *.log
+*.error
 *.ilg
 *.ind
 *.lof

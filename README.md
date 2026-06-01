@@ -1,0 +1,78 @@
+# Drachendämmerung
+
+A German-language tabletop RPG worldbook written in LaTeX by Marco Behnke.
+Inspired by the *Dragonlance Chronicles*, this is a High Fantasy setting built as an extension
+for the ERPS (Ernest Role Playing System) rule system, usable with other systems as well.
+
+## Project structure
+
+```
+gesamt.tex              master document
+docform.tex             page layout and package configuration
+compile.sh              original build script (historical reference)
+build.sh                Docker-based build script
+Dockerfile              build environment (TeX Live full)
+
+klassen/                character classes (18 classes)
+rassen/                 races (5 races)
+magie/                  magic schools (6 schools)
+die_staedte/            city descriptions (8 cities)
+zeitalter/              world history / ages
+legenden/               legends and stories
+voelker/                peoples
+abenteuer1/             first adventure module
+abenteuer_template/     template for new adventures
+pics/                   EPS illustrations
+```
+
+## Building
+
+Requires [Docker](https://www.docker.com/). Run from the project root:
+
+```bash
+./build.sh
+```
+
+The script will:
+1. Pull and build the Docker image (`texlive/texlive:latest`) — cached after first run
+2. Run three LaTeX passes, makeindex (3 indices), dvips, and ps2pdf inside the container
+3. Write the output to `drachendaemmerung.pdf` in the project root
+
+### Converting a JPG/PNG logo to EPS (for the title page)
+
+```bash
+magick pics/drache_final.jpg -fuzz 10% -transparent white pics/dd.eps
+```
+
+Requires [ImageMagick](https://imagemagick.org/) (`brew install imagemagick`).
+
+## TODO — missing illustration files
+
+The following EPS files are referenced in the source but missing from `pics/`.
+The build completes without them (dvips skips missing figures), but the corresponding
+pages will have blank spaces where the illustrations should appear.
+
+| Missing file | Referenced in | Description |
+|---|---|---|
+| `pics/kleriker.eps` | `klassen/kleriker.tex:3` | Illustration for the Kleriker (Priest/Cleric) character class |
+| `pics/moonshadow.eps` | `zeitalter/ersteszeitalter.tex` | Illustration in the First Age (Erstes Zeitalter) chapter |
+
+## Build pipeline
+
+The project uses the classic latex → dvips → ps2pdf pipeline (not pdflatex)
+because all graphics are EPS files.
+
+```
+latex gesamt.tex          (first pass — generates .aux, .idx, .pdx, .rdx)
+makeindex gesamt.idx      (main keyword index)
+makeindex gesamt.pdx      (persons index)
+makeindex gesamt.rdx      (cities/regions index)
+latex gesamt.tex          (second pass — incorporates index data)
+latex gesamt.tex          (third pass — resolves cross-references)
+dvips gesamt.dvi          (DVI → PostScript)
+ps2pdf gesamt.ps          (PostScript → PDF)
+```
+
+## License
+
+See [LICENSE](LICENSE).
