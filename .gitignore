@@ -1,3 +1,6 @@
+/.idea/
+*.iml
+
 compile.cmd
 *.aux
 *.pdf
