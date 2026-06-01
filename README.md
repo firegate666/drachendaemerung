@@ -9,9 +9,11 @@ for the ERPS (Ernest Role Playing System) rule system, usable with other systems
 ```
 gesamt.tex              master document
 docform.tex             page layout and package configuration
-compile.sh              original build script (historical reference)
-build.sh                Docker-based build script
+Makefile                build all documents
 Dockerfile              build environment (TeX Live full)
+scripts/
+  docker-compile.sh     shared compile helper used by the Makefile
+compile.sh              original build script (historical reference)
 
 klassen/                character classes (18 classes)
 rassen/                 races (5 races)
@@ -27,16 +29,29 @@ pics/                   EPS illustrations
 
 ## Building
 
-Requires [Docker](https://www.docker.com/). Run from the project root:
+Requires [Docker](https://www.docker.com/) and `make`.
 
-```bash
-./build.sh
-```
+| Command | Output |
+|---|---|
+| `make` / `make all` | Build all three documents |
+| `make gesamt` | `drachendaemmerung.pdf` (main rulebook) |
+| `make abenteuer-template` | `abenteuer_template/abenteuer_template.pdf` |
+| `make abenteuer1` | `abenteuer1/ab_dasdrachentier.pdf` |
+| `make image` | (Re)build the Docker image only |
+| `make clean` | Remove generated PDF, DVI, and PS files |
+| `make clean-image` | `clean` + remove the Docker image |
 
-The script will:
-1. Pull and build the Docker image (`texlive/texlive:latest`) — cached after first run
-2. Run three LaTeX passes, makeindex (3 indices), dvips, and ps2pdf inside the container
-3. Write the output to `drachendaemmerung.pdf` in the project root
+The first run pulls `texlive/texlive:latest` (several GB); subsequent runs use the cached image.
+
+### Adding a new adventure
+
+1. Copy `abenteuer_template/` to a new folder (e.g. `abenteuer2/`)
+2. Add a target to the `Makefile`:
+   ```makefile
+   abenteuer2: image
+       @bash scripts/docker-compile.sh abenteuer2 <main-tex-basename> <output>.pdf
+   ```
+3. Add the new target to the `all` dependency list
 
 ### Converting a JPG/PNG logo to EPS (for the title page)
 
